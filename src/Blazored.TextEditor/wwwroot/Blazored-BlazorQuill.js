@@ -5,12 +5,19 @@
             placeholder, theme, debugLevel) {  
 
             Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+            Quill.register("modules/imageCompressor", imageCompressor);
 
             var options = {
                 debug: debugLevel,
                 modules: {
                     toolbar: toolBar,
-                    blotFormatter: {}
+                    blotFormatter: {},
+                    imageCompressor: {
+                        quality: 0.7,
+                        maxWidth: 1000, // default
+                        maxHeight: 1000, // default
+                        imageType: 'image/jpeg'
+                    }
                 },
                 placeholder: placeholder,
                 readOnly: readOnly,

@@ -26,7 +26,17 @@ namespace BlazorServerSide
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
+            services.AddServerSideBlazor()
+                .AddCircuitOptions(options => { options.DetailedErrors = true; })
+                .AddHubOptions(options =>
+                {
+                    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+                    options.EnableDetailedErrors = true;
+                    options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+                    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+                    options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
+                    options.StreamBufferCapacity = 10;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
