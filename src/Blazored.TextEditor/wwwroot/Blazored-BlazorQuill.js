@@ -1,8 +1,8 @@
 ﻿(function () {
     window.QuillFunctions = {        
         createQuill: function (
-            quillElement, toolBar, readOnly,
-            placeholder, theme, debugLevel) {  
+            dotnet, quillElement, toolBar, readOnly,
+            placeholder, theme, debugLevel, onContentChanged) {  
 
             Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
             Quill.register("modules/imageCompressor", imageCompressor);
@@ -24,7 +24,13 @@
                 theme: theme
             };
 
-            new Quill(quillElement, options);
+            var quill = new Quill(quillElement, options);
+            quill.on("text-change",
+                (_dx, _dy, source) => {
+                    if (source === "user") {
+                        dotnet.invokeMethodAsync(onContentChanged);
+                    }
+                });
         },
         getQuillContent: function(quillElement) {
             return JSON.stringify(quillElement.__quill.getContents());

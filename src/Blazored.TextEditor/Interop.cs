@@ -7,6 +7,7 @@ namespace Blazored.TextEditor
     public static class Interop
     {
         internal static ValueTask<object> CreateQuill(
+            DotNetObjectReference<BlazoredTextEditor> dotnet,
             IJSRuntime jsRuntime,
             ElementReference quillElement,
             ElementReference toolbar,
@@ -17,9 +18,10 @@ namespace Blazored.TextEditor
         {
             return jsRuntime.InvokeAsync<object>(
                 "QuillFunctions.createQuill", 
-                quillElement, toolbar, readOnly, 
-                placeholder, theme, debugLevel);
+                dotnet, quillElement, toolbar, readOnly, 
+                placeholder, theme, debugLevel, nameof(BlazoredTextEditor.OnContentChanged));
         }
+
 
         internal static ValueTask<string> GetText(
             IJSRuntime jsRuntime,

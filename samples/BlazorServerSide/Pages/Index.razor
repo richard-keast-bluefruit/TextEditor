@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using Blazored.TextEditor
 
-<BlazoredTextEditor @ref="@QuillHtml">
+<BlazoredTextEditor @ref="@QuillHtml" ContentChanged="@OnContentChanged">
     <ToolbarContent>
         <select class="ql-header">
             <option selected=""></option>
@@ -166,7 +166,7 @@
 
     string QuillHTMLContent;
     string QuillContent;
-    string QuillReadOnlyContent = 
+    string QuillReadOnlyContent =
         @"<span><b>Read Only</b> <u>Content</u></span>";
 
     bool mode = false;
@@ -208,5 +208,11 @@
     {
         mode = (mode) ? false : true;
         await this.QuillReadOnly.EnableEditor(mode);
+    }
+
+    public async Task OnContentChanged()
+    {
+        var content = await this.QuillHtml.GetHTML();
+        Console.Write(content);
     }
 }

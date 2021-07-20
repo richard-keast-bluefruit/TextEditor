@@ -30,15 +30,23 @@
     public string DebugLevel { get; set; }
         = "info";
 
+    [Parameter] public EventCallback ContentChanged { get; set; }
+
     private ElementReference QuillElement;
     private ElementReference ToolBar;
 
+    [JSInvokable] public Task OnContentChanged() => ContentChanged.InvokeAsync(true);
+
     protected override async Task
-        OnAfterRenderAsync(bool firstRender)
+    OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            var dotnet = DotNetObjectReference
+               .Create(this);
+
             await Interop.CreateQuill(
+                dotnet,
                 JSRuntime,
                 QuillElement,
                 ToolBar,
